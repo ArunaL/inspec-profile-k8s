@@ -251,9 +251,9 @@ control "k8s-8" do
 end
 
 control "k8s-9" do
-  impact 0.7
+  impact 0.9
 
-  title "Ensure Ansible version and Local health checks"
+  title "Health check 10252"
 
   desc "By default, user-managed resources will be placed in the `default` namespace.  This makes it difficult to properly define policies for RBAC permissions, service account usage, network policies, and more.  Creating dedicated namespaces and running workloads and supporting resources in each helps support proper API server permissions separation and network microsegmentation."
   desc "remediation", "Create dedicated namespaces for each type of related workload, and migrate those resources into those namespaces.  Ensure that RBAC permissions are not granted at the cluster scope but per namespace for the application owners at each namespace level."
@@ -266,7 +266,7 @@ control "k8s-9" do
 
   ref "Kubernetes Namespaces", url: "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/"
 
-  describe command('ansible --version') do
+  describe command('curl http://localhost:10252/healthz') do
     its('exit_status') { should eq 0 }
-  end
+  end 
 end
