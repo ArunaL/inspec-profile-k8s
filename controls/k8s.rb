@@ -269,16 +269,4 @@ control "k8s-9" do
   describe command('ansible --version') do
     its('exit_status') { should eq 0 }
   end
-  describe command('curl http://localhost:10252/healthz') do
-    its('exit_status') { should eq 0 }
-  end
-  describe command('curl --cacert /tests/ssl/ca.pem --cert /tests/ssl/client-goss.pem --key /tests/ssl/client-goss-key.pem https://localhost/healthz') do
-    its('exit_status') { should eq 0 }
-  end
-  describe command('curl http://localhost:10251/healthz') do
-    its('exit_status') { should eq 0 }
-  end
-  describe command('curl http://localhost:10256/healthz') do
-    its('exit_status') { should eq 0 }
-  end 
 end
