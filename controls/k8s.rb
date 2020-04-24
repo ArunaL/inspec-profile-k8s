@@ -260,7 +260,7 @@ control "k8s-9" do
   desc "validation", "Run `kubectl get all` in the `default`, `kube-public`, and if present, `kube-node-lease` namespaces.  There should only be the `kubernetes` service."
 
   tag platform: "K8S"
-  tag category: "Workload Isolation"
+  tag category: "Service Health"
   tag resource: "Pods"
   tag effort: 0.5
 
