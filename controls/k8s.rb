@@ -266,7 +266,7 @@ control "k8s-9" do
 
   ref "Kubernetes Namespaces", url: "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/"
 
-  describe command('curl http://localhost:10252/healthz') do
-    its('exit_status') { should eq 0 }
-  end 
+  describe file('/tmp') do
+    it { should be_directory }
+  end
 end
