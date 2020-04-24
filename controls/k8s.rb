@@ -249,3 +249,36 @@ control "k8s-8" do
     end
   end
 end
+
+control "k8s-9" do
+  impact 0.7
+
+  title "Ensure Ansible version and Local health checks"
+
+  desc "By default, user-managed resources will be placed in the `default` namespace.  This makes it difficult to properly define policies for RBAC permissions, service account usage, network policies, and more.  Creating dedicated namespaces and running workloads and supporting resources in each helps support proper API server permissions separation and network microsegmentation."
+  desc "remediation", "Create dedicated namespaces for each type of related workload, and migrate those resources into those namespaces.  Ensure that RBAC permissions are not granted at the cluster scope but per namespace for the application owners at each namespace level."
+  desc "validation", "Run `kubectl get all` in the `default`, `kube-public`, and if present, `kube-node-lease` namespaces.  There should only be the `kubernetes` service."
+
+  tag platform: "K8S"
+  tag category: "Workload Isolation"
+  tag resource: "Pods"
+  tag effort: 0.5
+
+  ref "Kubernetes Namespaces", url: "https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/"
+
+  describe command('ansible --version') do
+    its('exit_status') { should eq 0 }
+  end
+  describe command('curl http://localhost:10252/healthz') do
+    its('exit_status') { should eq 0 }
+  end
+  describe command('curl --cacert /tests/ssl/ca.pem --cert /tests/ssl/client-goss.pem --key /tests/ssl/client-goss-key.pem https://localhost/healthz') do
+    its('exit_status') { should eq 0 }
+  end
+  describe command('curl http://localhost:10251/healthz') do
+    its('exit_status') { should eq 0 }
+  end
+  describe command('curl http://localhost:10256/healthz') do
+    its('exit_status') { should eq 0 }
+  end 
+end
